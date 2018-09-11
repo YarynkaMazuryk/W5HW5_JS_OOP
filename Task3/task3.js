@@ -10,7 +10,9 @@ function submitUsers(e) {
     const tr = user.renderUsers();
     users.push(user);
     user.handleClick(tr);
+
     count++;
+    form.reset();
 }
 
 class SuperUser {
