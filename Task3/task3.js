@@ -1,67 +1,64 @@
-let users = [];
-let dataUsers = [];
-const doc = document;
-const tbody = doc.querySelector('tbody');
-const form = doc.getElementById('profileForm');
+const tbody = document.querySelector('tbody');
+const form = document.getElementById('profileForm');
 form.addEventListener('submit', submitUsers);
-function submitUsers() {
-    event.preventDefault();
-    let data = new FormData(form);
-    let tempObj = {};
-    for (let value of data.entries()) {
-        tempObj[value[0]] = value[1];
-    }
-    dataUsers.push(tempObj);
-    let user = new User(tempObj);
+let count = 1;
+let users = [];
+
+function submitUsers(e) {
+    e.preventDefault();
+    const user = new User(form.name.value, form.gender.value, form.date.value,form.address.value,form.phone.value,form.email.value);
+    const tr = user.renderUsers();
     users.push(user);
-    renderUsers(dataUsers);
+    user.handleClick(tr);
+    count++;
 }
-function renderUsers(users) {
-    let index = 0;
-    clearTable();
-    for (obj in users) {
-        let tr = document.createElement('tr');
-        tr.setAttribute('data-id', index);
-        for (key in users[obj]) {
-            let td = document.createElement('td');
-            td.innerText = users[obj][key]
-            tr.appendChild(td);
-        }
-        handleClick(tr);
-        tbody.appendChild(tr);
-    }
-    index++;
-}
-function clearTable() {
-    while (tbody.firstChild)
-        tbody.removeChild(tbody.firstChild)
-}
-function handleClick(tag) {
-    let isDataVisible = true;
-    tag.addEventListener('click', (e) => {
-        let index = tag.getAttribute("data-id");
-        isDataVisible = users[index].changeDataVisibility(isDataVisible, e.target.parentNode)
-    })
-}
+
 class SuperUser {
-    changeDataVisibility(isDataVisible, target) {
-        let clickedEl = [...target.children];
-        clickedEl.forEach((el, index) => {
-            if (index === 0) {
-                return;
-            } else {
-                !isDataVisible ? el.classList.remove('notVisible') : el.classList.add('notVisible');
-            }
-        })
-        return !isDataVisible
+    constructor(name, gender, date, address, phone, email) {
+        this.name = name;
+        this.gender = gender;
+        this.date = date;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
     }
 
 }
+
 class User extends SuperUser {
-    constructor(data) {
-        super(data);
+    constructor(name, gender, date, address, phone, email, isDataVisible) {
+        super(name, gender, date, address, phone, email, isDataVisible);
+        this.isDataVisible = true;
+    }
+    renderUsers() {
+        const tr = document.createElement('tr');
+        for (let key in this) {
+            if ( !(key === 'isDataVisible') ) {
+                const td = document.createElement('td');
+                td.innerHTML = this[key];
+                tr.appendChild(td); 
+            } 
+        }
+        tbody.appendChild(tr);
+        return tr;
+    }
+    changeDataVisibility(tag) {
+        if (this.isDataVisible === true) {
+            tag.classList.add('notVisible');
+            this.isDataVisible = false;
+        } else {
+            this.isDataVisible = true;
+            tag.classList.remove('notVisible');
+        }
+    }
+    handleClick(tag) {
+        tag.addEventListener('click', (e) => {
+            this.changeDataVisibility(tag);
+        })
     }
 }
+
+
 
 
 

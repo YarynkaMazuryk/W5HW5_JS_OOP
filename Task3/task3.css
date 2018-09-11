@@ -13,6 +13,6 @@ form button {
 td:first-child {
     cursor: pointer
 }
-.notVisible {
+.notVisible td:not(:first-child) {
     display: none;
 }

@@ -4,10 +4,10 @@ class SpaceShip {
     this.model = model;
     this.speedPerHour = speedPerHour;
   }
-  get name() {
+  getName() {
     return `${this._name}`;
   }
-  set name(newValue) {
+  setName(newValue) {
     this._name = newValue;
   }
   shipFloat(speed = SpaceShip.getDefaultSpeed()) {
@@ -18,6 +18,7 @@ class SpaceShip {
     return 100;
   }
 }
+
 class Cutter extends SpaceShip {
   constructor(name, model, speedPerHour, navigationSchemes = 1, satellites = 1) {
     super(name, model, speedPerHour);
@@ -35,6 +36,7 @@ class Cutter extends SpaceShip {
     console.log(`On board the ship there are ${this.satellites} satellites`);
   }
 }
+
 class Corvette extends SpaceShip {
   constructor(name, model, speedPerHour, rockets = 2, windows = 1, lasers) {
     super(name, model, speedPerHour);
@@ -53,6 +55,7 @@ class Corvette extends SpaceShip {
     console.log(`On board the ship there are ${this.lasers} windows`);
   }
 }
+
 class Frigate extends SpaceShip {
   constructor(name, model, speedPerHour, arsenal, cabins) {
     super(name, model, speedPerHour);
